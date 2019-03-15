@@ -29,6 +29,16 @@ server.post('/api/zoos', (req, res) => {
     })
 });
 
+server.get('/api/zoos', (req, res) => {
+  db('zoos')
+    .then(zoos => {
+      res.status(200).json(zoos);
+    })
+    .catch(err => {
+      res.status(500).json({message: 'Zoos not found.'});
+    })
+});
+
 const port = 3300;
 server.listen(port, function() {
   console.log(`\n=== Web API Listening on http://localhost:${port} ===\n`);
