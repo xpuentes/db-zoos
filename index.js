@@ -26,7 +26,7 @@ server.post('/api/zoos', (req, res) => {
     })
     .catch(err => {
       res.status(500).json({message: 'Unable to add new zoo.'});
-    })
+    });
 });
 
 server.get('/api/zoos', (req, res) => {
@@ -35,8 +35,26 @@ server.get('/api/zoos', (req, res) => {
       res.status(200).json(zoos);
     })
     .catch(err => {
-      res.status(500).json({message: 'Zoos not found.'});
+      res.status(500).json({message: 'Error loading data.'});
+    });
+});
+
+server.get('/api/zoos/:id', (req, res) => {
+  const { id } = req.params;
+
+  db('zoos')
+    .where({id: id})
+    .first()
+    .then(zoos => {
+      if(zoos){
+        res.status(200).json(zoos);
+      } else {
+        res.status(400).json({message: 'Zoo not found.'})
+      }
     })
+    .catch(err => {
+      res.status(500).json({message: 'Error loading data'});
+    });
 });
 
 const port = 3300;
